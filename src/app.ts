@@ -7,4 +7,4 @@ app.use(express.static(path.join(__dirname, 'client/build')))
 
 app.get('/api/users', (req, res) => res.json({users: ['bob']}))
 
-app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${process.env.PORT}`))
