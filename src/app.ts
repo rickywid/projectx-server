@@ -12,13 +12,18 @@ import githubAuthRouter from './routes/auth/github/github-auth';
 import githubAuthCallbackRouter from './routes/auth/github/callback';
 import loginRouter from './routes/auth/login';
 import signupRouter from './routes/auth/signup';
+import signoutRouter from './routes/auth/signout';
+import getProjectsRouter from './routes/projects';
 import getUserRouter from './routes/user';
 
 
 const app = express()
 const port = 5000
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -45,11 +50,9 @@ app.use('/api/auth/github', githubAuthRouter);
 app.use('/api/auth/github/callback', githubAuthCallbackRouter);
 app.use('/api/login/', loginRouter);
 app.use('/api/signup/', signupRouter);
+app.use('/api/signout/', signoutRouter);
 
+app.use('/api/projects/', getProjectsRouter);
 app.use('/api/user/', getUserRouter);
-
-
-console.log(process.env.GITHUB_CLIENT_ID)
-
 
 app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))

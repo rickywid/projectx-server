@@ -76,14 +76,13 @@ passport.use(new GitHubStrategy({
         }
 
         user = result.rows[0];
-        return done(null, user);
+        done(null, user);
       })
   }
 ));
 
 
 passport.use(new LocalStrategy((username: string, password: string, done: any) => {
-  console.log(username, password)
   db.query(`
   SELECT * FROM users
   WHERE username = $1;
@@ -100,10 +99,9 @@ passport.use(new LocalStrategy((username: string, password: string, done: any) =
 
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if(err || !isMatch) {
-          return done(null, false)
+          done(null, false)
         }
-        console.log('called')
-        return done(null, user)
+        done(null, user)
       })
     })
   }

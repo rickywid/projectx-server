@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/', passport.authenticate('local'), (req, res, next) => {
 	
-	console.log('login user:', req.user);
+	res.send({ status: 200 });
 });
 
 

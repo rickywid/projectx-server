@@ -1,14 +1,21 @@
 import express from 'express';
-import passport from 'passport';
-import '../lib/passport';
-
 const router = express.Router();
 
 router.get('/', function (req, res, next) {
-  console.log('get user')
-    console.log(req.session)
-    console.log(req.user)
-    console.log(req.isAuthenticated())
+    
+  const isAuthenticated = req.isAuthenticated();
+  if(req.isAuthenticated()) {
+    const { id, username, gh_avatar } = req.user as any;
+    
+    res.send({
+      data: {id, username, gh_avatar, isAuthenticated },
+      
+    })
+  } else {
+    res.send({
+      data: { isAuthenticated },
+    })
+  }
 });
 
 
