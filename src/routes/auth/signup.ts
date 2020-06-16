@@ -1,13 +1,11 @@
 import express from 'express';
-import passport from 'passport';
-import formidable from 'formidable';
 import bcrypt from 'bcrypt-nodejs';
 import db from '../../lib/db';
 const router = express.Router();
 
 
 router.post('/', (req, res, next) => {
-  
+
   const { username, email, password } = req.body;
 
   // check if username already exists
@@ -42,12 +40,12 @@ router.post('/', (req, res, next) => {
 
           db.query(`
             INSERT INTO users (username, email, password)
-            VALUES ($1, $2, $3);
+            VALUES ($1, $2, $3) RETURNING id;
           `, [username, email, hash], (err: any, result: any) => {
 
             if (err) console.log(err)
 
-            return res.status(200).send({message: 'ok'});
+            return res.status(200).send({id: result.rows[0].id});
 
           });
         });

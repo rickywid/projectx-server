@@ -83,10 +83,13 @@ passport.use(new GitHubStrategy({
 
 
 passport.use(new LocalStrategy((username: string, password: string, done: any) => {
+  console.log(username, password)
   db.query(`
   SELECT * FROM users
-  WHERE username = $1;
+  WHERE email = $1;
 `, [username], (err: any, result: any) => {
+    console.log('username==============')
+    console.log(result.rows)
       if (err) {
         return console.log(err)
       }
