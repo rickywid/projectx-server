@@ -5,7 +5,15 @@ const router = express.Router();
 
 router.post('/', function (req, res, next) {
     
-    interface IFields {
+    const form = new formidable.IncomingForm();
+    form.parse(req, (err, fields) => {
+        console.log(fields)
+      if(err) {
+        console.log(err);
+        throw err; 
+      }
+
+      interface IFields {
         name: string;
         description: string;
         tagline: string;
@@ -16,7 +24,7 @@ router.post('/', function (req, res, next) {
         screenshots: string;
         user_id: string;
       }
-      const { name, description, tagline, url, technologies, tags, collaboration, screenshots, user_id }: IFields = req.body as any as IFields;
+      const { name, description, tagline, url, technologies, tags, collaboration, screenshots, user_id }: IFields = fields as any as IFields;
 
       const tagsArr = tags.split(',').map(num => parseInt(num));
       const technologiesArr = technologies.split(',').map(num => parseInt(num));;
@@ -37,6 +45,7 @@ router.post('/', function (req, res, next) {
         
         res.json({status: 200});
       })
+    });
 });
 
 export default router;
