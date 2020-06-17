@@ -15,7 +15,8 @@ import signupRouter from './routes/auth/signup';
 import signoutRouter from './routes/auth/signout';
 import getProjectsRouter from './routes/projects';
 import getUserRouter from './routes/user';
-
+import imageUploadRouter from './routes/image/upload';
+import createProjectRouter from './routes/createProject';
 
 const app = express()
 const port = 5000
@@ -54,5 +55,7 @@ app.use('/api/signout/', signoutRouter);
 
 app.use('/api/projects/', getProjectsRouter);
 app.use('/api/user/', getUserRouter);
+app.use('/api/image/upload', imageUploadRouter);
+app.use('/api/project/new', createProjectRouter);
 
 app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))
