@@ -10,7 +10,7 @@ router.post('/', (req, res, next) => {
   const form = new formidable.IncomingForm();
   form.parse(req, (err, fields) => { 
 
-    const { username, email, password } = fields;
+    const { username, email, password, profile_img } = fields;
 
     // check if username already exists
     db.query(`
@@ -43,9 +43,9 @@ router.post('/', (req, res, next) => {
             if (err) console.log(err);
 
             db.query(`
-              INSERT INTO users (username, email, password)
-              VALUES ($1, $2, $3) RETURNING id;
-            `, [username, email, hash], (err: any, result: any) => {
+              INSERT INTO users (username, email, password, gh_avatar)
+              VALUES ($1, $2, $3, $4) RETURNING id;
+            `, [username, email, hash, profile_img], (err: any, result: any) => {
 
               if (err) console.log(err)
 

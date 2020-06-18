@@ -22,9 +22,13 @@ router.post('/', function (req, res, next) {
         if (err) {
           return console.log(err)
         }
-        
-        res.json({status: 200});
-      })
+
+        const { id, username, gh_avatar } = req.user as any;
+      
+        res.send({
+          data: {id, username, gh_avatar }
+        });
+      });
     });
 });
 

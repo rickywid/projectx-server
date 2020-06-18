@@ -23,6 +23,9 @@ router.get('/:id', function (req, res, next) {
             (SELECT username 
             FROM users 
             WHERE users.id = projects.user_id),
+            (SELECT gh_avatar 
+                FROM users 
+                WHERE users.id = projects.user_id),
             (SELECT array_agg(technologies.name::TEXT)
         FROM projects_technologies
         INNER JOIN technologies
@@ -43,6 +46,7 @@ router.get('/:id', function (req, res, next) {
             project_id, 
             comments.created_on,
             username,
+            gh_avatar,
             users.id AS user_id
         FROM comments
         JOIN users

@@ -25,11 +25,11 @@ router.post('/', function (req, res, next) {
         user_id: string;
       }
       const { name, description, tagline, url, technologies, tags, collaboration, screenshots, user_id }: IFields = fields as any as IFields;
-
+      
       const tagsArr = tags.split(',').map(num => parseInt(num));
-      const technologiesArr = technologies.split(',').map(num => parseInt(num));;
+      const technologiesArr = technologies.split(',').map(num => parseInt(num));
       const screenshotsArr = screenshots.split(',');
-
+      
       db.query(`
           WITH
             t1 AS (INSERT INTO projects(name, description, tagline, url, collaboration, user_id, images) 
