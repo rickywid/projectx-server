@@ -4,7 +4,6 @@ const router = express.Router();
 
 router.post('/', passport.authenticate('local'), (req: any, res, next) => {
 	const userID = req.user.id;
-	
 	res.send({ id: userID });
 });
 
