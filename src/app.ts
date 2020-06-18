@@ -19,8 +19,8 @@ import imageUploadRouter from './routes/image/upload';
 import createProjectRouter from './routes/createProject';
 import likeProjectRouter from './routes/likeProject';
 import unlikeProjectRouter from './routes/unlikeProject';
-
 import getProjectRouter from './routes/getProject';
+import newCommentProjectRouter from './routes/newCommentProject';
 
 const app = express()
 const port = 5000
@@ -72,5 +72,6 @@ app.use('/api/project/new', createProjectRouter);
 app.use('/api/project', getProjectRouter);
 app.use('/api/project/like', likeProjectRouter);
 app.use('/api/project/unlike', unlikeProjectRouter);
+app.use('/api/comment/new', newCommentProjectRouter);
 
 app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))
