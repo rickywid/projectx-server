@@ -21,6 +21,7 @@ import likeProjectRouter from './routes/likeProject';
 import unlikeProjectRouter from './routes/unlikeProject';
 import getProjectRouter from './routes/getProject';
 import newCommentProjectRouter from './routes/newCommentProject';
+import getUserProfileRouter from './routes/getUserProfile';
 
 const app = express()
 const port = 5000
@@ -73,5 +74,6 @@ app.use('/api/project', getProjectRouter);
 app.use('/api/project/like', likeProjectRouter);
 app.use('/api/project/unlike', unlikeProjectRouter);
 app.use('/api/comment/new', newCommentProjectRouter);
+app.use('/api/user/profile', getUserProfileRouter);
 
 app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))
