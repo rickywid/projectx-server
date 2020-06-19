@@ -23,11 +23,7 @@ router.post('/', function (req, res, next) {
           return console.log(err)
         }
 
-        const { id, username, gh_avatar } = req.user as any;
-      
-        res.send({
-          data: {id, username, gh_avatar }
-        });
+        res.send({msg: 'submitted'})     
       });
     });
 });
