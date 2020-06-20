@@ -26,6 +26,7 @@ import saveProjecteRouter from './routes/saveProject';
 import unSaveProjecteRouter from './routes/unSaveProject';
 import isProjectSavedRouter from './routes/isProjectSaved';
 import updateProjectRouter from './routes/updateProject';
+import deleteProjectRouter from './routes/deleteProject';
 
 const app = express()
 const port = 5000
@@ -84,5 +85,6 @@ app.use('/api/user/profile', getUserProfileRouter);
 app.use('/api/project/save', isProjectSavedRouter);
 app.use('/api/project/save', saveProjecteRouter);
 app.use('/api/project/unsave', unSaveProjecteRouter);
+app.use('/api/project/delete', deleteProjectRouter);
 
 app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))

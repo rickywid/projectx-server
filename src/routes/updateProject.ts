@@ -9,7 +9,7 @@ router.put('/:id', function (req, res, next) {
     
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
-        console.log(fields)
+        
       if(err) {
         console.log(err);
         throw err; 
@@ -76,3 +76,6 @@ router.put('/:id', function (req, res, next) {
 });
 
 export default router;
+
+
+// "projects_technologies_pkey" PRIMARY KEY, btree (project_id, technology_id)
