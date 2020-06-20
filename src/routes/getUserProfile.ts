@@ -4,12 +4,20 @@ const router = express.Router();
 
 router.get('/:username', function (req, res, next) {
     const username = req.params.username;
+    let loggedInUser: number;
+
+    // check if req.user exists (if user is logged in)
+    if(req.user) {
+        const user = req.user as any;
+        loggedInUser = user.id;
+    }
 
     // get user profile
     db.query(`SELECT * FROM users WHERE username = $1`, [username], (err: any, result: any) => {
         if (err) console.log(err)
 
         const user = result.rows[0];
+        user['selfProfile'] = user.id === loggedInUser;
 
         // get user's saved projects
         db.query(`
@@ -92,18 +100,8 @@ router.get('/:username', function (req, res, next) {
 
                     const userProjects = result.rows;
 
-                    // console.log(user)
-                    // console.log('******************************************************************')
-                    // console.log(likedProjects)
-                    // console.log('******************************************************************')
-                    // console.log(savedProjects)
-                    // console.log('******************************************************************')
-                    // console.log(userProjects)
-                    
-                    // const { id, username, gh_avatar, gh_profile, created_on } = user as any;
-                    // console.log(id,username,gh_avatar, gh_profile,created_on)
-                    return res.send({
-                    data: {user, likedProjects, savedProjects, userProjects},
+                    res.send({
+                        data: {user, likedProjects, savedProjects, userProjects},
                     })
                 })
             })

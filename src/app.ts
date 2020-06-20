@@ -25,6 +25,7 @@ import getUserProfileRouter from './routes/getUserProfile';
 import saveProjecteRouter from './routes/saveProject';
 import unSaveProjecteRouter from './routes/unSaveProject';
 import isProjectSavedRouter from './routes/isProjectSaved';
+import updateProjectRouter from './routes/updateProject';
 
 const app = express()
 const port = 5000
@@ -73,6 +74,7 @@ app.use('/api/projects/', getProjectsRouter);
 app.use('/api/user/', getUserRouter);
 app.use('/api/image/upload', imageUploadRouter);
 app.use('/api/project/new', createProjectRouter);
+app.use('/api/project/update', updateProjectRouter);
 app.use('/api/project', getProjectRouter);
 app.use('/api/project/like', likeProjectRouter);
 app.use('/api/project/unlike', unlikeProjectRouter);

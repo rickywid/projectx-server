@@ -38,7 +38,7 @@ passport.use(new GitHubStrategy({
     profile: any,
     done: any
   ) => {
-
+    console.log('profile', profile)
     db.query(
       `
         SELECT * 
@@ -73,10 +73,10 @@ passport.use(new GitHubStrategy({
               done(null, user);
             }
           );
+        } else {
+          user = result.rows[0];
+          done(null, user);
         }
-
-        user = result.rows[0];
-        done(null, user);
       })
   }
 ));
