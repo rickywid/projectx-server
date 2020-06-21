@@ -28,6 +28,9 @@ import isProjectSavedRouter from './routes/isProjectSaved';
 import updateProjectRouter from './routes/updateProject';
 import deleteProjectRouter from './routes/deleteProject';
 import searchRouter from './routes/search';
+import updateUserRouter from './routes/updateUser';
+import updatePasswordRouter from './routes/updatePassword';
+import deleteUserRouter from './routes/deleteUser';
 
 const app = express()
 const port = 5000
@@ -74,6 +77,7 @@ app.use('/api/signout/', signoutRouter);
 
 app.use('/api/projects/', getProjectsRouter);
 app.use('/api/user/', getUserRouter);
+app.use('/api/user/edit', updateUserRouter);
 app.use('/api/image/upload', imageUploadRouter);
 app.use('/api/project/new', createProjectRouter);
 app.use('/api/project/update', updateProjectRouter);
@@ -83,10 +87,12 @@ app.use('/api/project/unlike', unlikeProjectRouter);
 app.use('/api/comment/new', newCommentProjectRouter);
 app.use('/api/user/profile', getUserProfileRouter);
 app.use('/api/user/profile', getUserProfileRouter);
+app.use('/api/user/delete', deleteUserRouter);
 app.use('/api/project/save', isProjectSavedRouter);
 app.use('/api/project/save', saveProjecteRouter);
 app.use('/api/project/unsave', unSaveProjecteRouter);
 app.use('/api/project/delete', deleteProjectRouter);
 app.use('/api/search', searchRouter);
+app.use('/api/password/update', updatePasswordRouter);
 
 app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))
