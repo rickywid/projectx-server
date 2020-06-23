@@ -37,7 +37,7 @@ const port = 5000
 const parseJSON = express.json();
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: ['http://localhost:3000', 'https://evening-spire-06654.herokuapp.com'],
   credentials: true
 }));
 
