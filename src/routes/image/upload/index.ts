@@ -14,7 +14,6 @@ cloudinary.config({
 router.post('/', (req, res, next) => {
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields, files) => { 
-      console.log(files)
       if(err) {
         console.log(err);
         throw err;

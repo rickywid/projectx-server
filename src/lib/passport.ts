@@ -38,7 +38,6 @@ passport.use(new GitHubStrategy({
     profile: any,
     done: any
   ) => {
-    console.log('profile', profile)
     db.query(
       `
         SELECT * 
