@@ -95,4 +95,4 @@ app.use('/api/project/delete', deleteProjectRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/password/update', updatePasswordRouter);
 
-app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at http://localhost:${port}`))
+app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at ${process.env.DOMAIN}:${port}`))
