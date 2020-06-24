@@ -20,13 +20,14 @@ router.put('/:id', function (req, res, next) {
         description: string;
         tagline: string;
         url: string;
+        repourl: string;
         technologies: string;
         tags: string;
         collaboration: boolean;
         screenshots: string;
         user_id: string;
       }
-      const { name, description, tagline, url, technologies, tags, collaboration, screenshots }: IFields = fields as any as IFields;
+      const { name, description, tagline, url, technologies, tags, collaboration, screenshots, repourl }: IFields = fields as any as IFields;
       
       const tagsArr = tags.split(',').map(num => parseInt(num));
       const technologiesArr = technologies.split(',').map(num => parseInt(num));
@@ -42,10 +43,11 @@ router.put('/:id', function (req, res, next) {
             url = $4,
             collaboration = $5,
             user_id = $6,
-            images = $7
-        WHERE id =$8;
+            images = $7,
+            repo = $8
+        WHERE id =$9;
         
-      `, [name, description, tagline, url, collaboration, user.id, screenshotsArr, projectID], (err: any, result: any) => {
+      `, [name, description, tagline, url, collaboration, user.id, screenshotsArr, repourl, projectID], (err: any, result: any) => {
             if (err) { console.log(err) };
 
             // update projects_technologies table
