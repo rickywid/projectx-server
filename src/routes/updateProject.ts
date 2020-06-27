@@ -32,7 +32,7 @@ router.put('/:id', function (req, res, next) {
       const tagsArr = tags.split(',').map(num => parseInt(num));
       const technologiesArr = technologies.split(',').map(num => parseInt(num));
       const screenshotsArr = screenshots.split(',');
-      
+
       // update projects table
       db.query(`
         UPDATE projects
