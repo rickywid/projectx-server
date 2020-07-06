@@ -32,7 +32,10 @@ router.get('/', function(req, res, next) {
       if (err) {
         return console.log(err)
       }
-      res.json({data: result.rows, user: req.user} );
+      res.json({
+        data: result.rows || [], 
+        user: req.user
+      });
     })
 });
 
