@@ -4,12 +4,15 @@ const router = express.Router();
 
 router.get('/:username', function (req, res, next) {
     const username = req.params.username;
-    let loggedInUser: number;
-
+    let loggedInUser: string;
+    
     // check if req.user exists (if user is logged in)
     if(req.user) {
         const user = req.user as any;
-        loggedInUser = user.id;
+        loggedInUser = user.username;
+    } else {
+        // if user is accessing user profile page directly after new user signup, get username from sessions
+        loggedInUser = req!.session!.username;
     }
 
     // get user profile
@@ -17,7 +20,7 @@ router.get('/:username', function (req, res, next) {
         if (err) console.log(err)
 
         const user = result.rows[0];
-        user['selfProfile'] = user.id === loggedInUser;
+        user['selfProfile'] = username === loggedInUser;
 
         // get user's saved projects
         db.query(`

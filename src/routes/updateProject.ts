@@ -5,11 +5,11 @@ const router = express.Router();
 
 router.put('/:id', function (req, res, next) {
     const user = req.user as any;
+    const userID = req!.session!.userID || user.id;
     const projectID = req.params.id;
     
     const form = new formidable.IncomingForm();
     form.parse(req, (err, fields) => {
-        
       if(err) {
         console.log(err);
         throw err; 
@@ -47,7 +47,7 @@ router.put('/:id', function (req, res, next) {
             repo = $8
         WHERE id =$9;
         
-      `, [name, description, tagline, url, collaboration, user.id, screenshotsArr, repourl, projectID], (err: any, result: any) => {
+      `, [name, description, tagline, url, collaboration, userID, screenshotsArr, repourl, projectID], (err: any, result: any) => {
             if (err) { console.log(err) };
 
             // update projects_technologies table

@@ -44,11 +44,14 @@ router.post('/', (req, res, next) => {
 
             db.query(`
               INSERT INTO users (username, email, password, gh_avatar)
-              VALUES ($1, $2, $3, $4) RETURNING id;
+              VALUES ($1, $2, $3, $4) RETURNING id, username;
             `, [username, email, hash, profile_img], (err: any, result: any) => {
 
               if (err) console.log(err)
-
+              
+              req.session!.userID = result.rows[0].id;
+              req.session!.username = result.rows[0].username;
+              
               return res.status(200).send({id: result.rows[0].id});
 
             });
