@@ -37,7 +37,9 @@ router.post('/', function (req, res, next) {
             t2 AS (INSERT INTO projects_technologies(project_id, technology_id) 
                     SELECT t1.id, unnest($8::integer[]) from t1) 
 
-          INSERT INTO projects_tags(project_id, tag_id) select t1.id, unnest($9::integer[]) 
+            INSERT INTO projects_tags(project_id, tag_id) 
+            SELECT t1.id, unnest($9::integer[])
+            
           FROM t1;`,[name, description, tagline, url, collaboration, user_id, screenshotsArr, technologiesArr, tagsArr, repourl], (err: any, result: any) => {
         if (err) {
           return console.log(err)

@@ -27,18 +27,19 @@ router.get('/:id', function (req, res, next) {
             (SELECT gh_avatar 
                 FROM users 
                 WHERE users.id = projects.user_id),
+
             (SELECT array_agg(technologies.name::TEXT)
-        FROM projects_technologies
-        INNER JOIN technologies
-        ON technologies.id = projects_technologies.technology_id
-        WHERE projects_technologies.project_id = projects.id) AS technologies,
+                FROM projects_technologies
+                INNER JOIN technologies
+                ON technologies.id = projects_technologies.technology_id
+                WHERE projects_technologies.project_id = projects.id) AS technologies,
 
 
         (SELECT array_agg(tags.name::TEXT)
-        FROM projects_tags
-        INNER JOIN tags
-        ON tags.id = projects_tags.tag_id
-        WHERE projects_tags.project_id = projects.id) AS tags
+            FROM projects_tags
+            INNER JOIN tags
+            ON tags.id = projects_tags.tag_id
+            WHERE projects_tags.project_id = projects.id) AS tags
 
         FROM projects
         WHERE projects.id = $1;
