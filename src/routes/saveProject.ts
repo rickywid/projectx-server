@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post('/:id', function (req, res, next) {
 
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     const form = new formidable.IncomingForm();
 
     form.parse(req, async (err, fields, files) => {

@@ -5,15 +5,15 @@ import db from '../lib/db';
 router.get('/', function(req, res, next) {
     db.query(`
       select 
-        projects.id,
+        projects.uuid,
         projects.name,
         projects.description,
         projects.tagline,
         projects.url,
         projects.images,
         projects.collaboration,
-        (select count(*) from comments where comments.project_id = projects.id) as comment_count,
-        (select count(*) from likes where likes.project_id = projects.id) as likes_count,
+        (select count(*) from comments where comments.project_id = projects.uuid) as comment_count,
+        (select count(*) from likes where likes.project_id = projects.uuid) as likes_count,
         (select id from users where users.id = projects.user_id) as user_id,
         (select username from users where users.id = projects.user_id),
         (select gh_avatar from users where users.id = projects.user_id),
@@ -22,13 +22,13 @@ router.get('/', function(req, res, next) {
           from projects_technologies
           inner join technologies
           on technologies.id = projects_technologies.technology_id
-          where projects_technologies.project_id = projects.id) as technologies,
+          where projects_technologies.project_id = projects.uuid) as technologies,
         
           (select array_agg(tags.name::TEXT)
             from projects_tags
             inner join tags
             on tags.id = projects_tags.tag_id
-            where projects_tags.project_id = projects.id) as tags
+            where projects_tags.project_id = projects.uuid) as tags
       from projects;
     `, [], (err: any, result: { rows: any; }) => {
       if (err) {

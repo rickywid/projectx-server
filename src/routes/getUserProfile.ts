@@ -25,11 +25,11 @@ router.get('/:username', function (req, res, next) {
         // get user's saved projects
         db.query(`
             select 
-                projects.id, 
+                projects.uuid, 
                 projects.name, 
                 projects.images,
-                (select count(*) from comments where comments.project_id = projects.id) as comment_count,
-                (select count(*) from likes where likes.project_id = projects.id) as likes_count,
+                (select count(*) from comments where comments.project_id = projects.uuid) as comment_count,
+                (select count(*) from likes where likes.project_id = projects.uuid) as likes_count,
                 (select id from users where users.id = projects.user_id) as owner_id,
                 (select username from users where users.id = projects.user_id),
                 (select gh_avatar from users where users.id = projects.user_id),
@@ -38,11 +38,11 @@ router.get('/:username', function (req, res, next) {
                 from projects_tags
                 inner join tags
                 on tags.id = projects_tags.tag_id
-                where projects_tags.project_id = projects.id) as tags
+                where projects_tags.project_id = projects.uuid) as tags
 
             from user_saved_projects
             inner join projects
-            on projects.id = user_saved_projects.project_id
+            on projects.uuid = user_saved_projects.project_id
             where user_saved_projects.user_id = $1; 
         
         `, [user.id], (err: any, result: any) => {
@@ -53,11 +53,11 @@ router.get('/:username', function (req, res, next) {
             // get user's liked projects
             db.query(`
             select 
-                projects.id, 
+                projects.uuid, 
                 projects.name, 
                 projects.images,
-                (select count(*) from comments where comments.project_id = projects.id) as comment_count,
-                (select count(*) from likes where likes.project_id = projects.id) as likes_count,
+                (select count(*) from comments where comments.project_id = projects.uuid) as comment_count,
+                (select count(*) from likes where likes.project_id = projects.uuid) as likes_count,
                 (select id from users where users.id = projects.user_id) as owner_id,
                 (select username from users where users.id = projects.user_id),
                 (select gh_avatar from users where users.id = projects.user_id),
@@ -66,11 +66,11 @@ router.get('/:username', function (req, res, next) {
                 from projects_tags
                 inner join tags
                 on tags.id = projects_tags.tag_id
-                where projects_tags.project_id = projects.id) as tags
+                where projects_tags.project_id = projects.uuid) as tags
 
             from likes
             inner join projects
-            on likes.project_id = projects.id
+            on likes.project_id = projects.uuid
             where likes.user_id = $1;
         
         `, [user.id], (err: any, result: any) => {
@@ -81,11 +81,11 @@ router.get('/:username', function (req, res, next) {
                 // get user's projects
                 db.query(`
             select 
-                projects.id, 
+                projects.uuid, 
                 projects.name,
                 projects.images,
-                (select count(*) from comments where comments.project_id = projects.id) as comment_count,
-                (select count(*) from likes where likes.project_id = projects.id) as likes_count,
+                (select count(*) from comments where comments.project_id = projects.uuid) as comment_count,
+                (select count(*) from likes where likes.project_id = projects.uuid) as likes_count,
                 (select id from users where users.id = projects.user_id) as owner_id,
                 (select username from users where users.id = projects.user_id),
                 (select gh_avatar from users where users.id = projects.user_id),
@@ -94,7 +94,7 @@ router.get('/:username', function (req, res, next) {
                 from projects_tags
                 inner join tags
                 on tags.id = projects_tags.tag_id
-                where projects_tags.project_id = projects.id) as tags
+                where projects_tags.project_id = projects.uuid) as tags
 
             from projects
             where user_id = $1;

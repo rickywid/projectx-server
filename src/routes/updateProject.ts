@@ -45,7 +45,7 @@ router.put('/:id', function (req, res, next) {
             user_id = $6,
             images = $7,
             repo = $8
-        WHERE id =$9;
+        WHERE uuid = $9;
         
       `, [name, description, tagline, url, collaboration, userID, screenshotsArr, repourl, projectID], (err: any, result: any) => {
             if (err) { console.log(err) };

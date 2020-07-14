@@ -8,7 +8,7 @@ router.get('/:category', function (req, res, next) {
     db.query(`
     SELECT 
 
-        projects.id,
+        projects.uuid,
         projects.name,
         projects.tagline,
         projects.description,
@@ -25,11 +25,11 @@ router.get('/:category', function (req, res, next) {
         FROM projects_tags
         INNER JOIN tags
         ON tags.id = projects_tags.tag_id
-        WHERE projects_tags.project_id = projects.id) as tags
+        WHERE projects_tags.project_id = projects.uuid) as tags
 
     FROM projects_tags
     INNER JOIN projects
-    ON projects.id = projects_tags.project_id
+    ON projects.uuid = projects_tags.project_id
     WHERE projects_tags.tag_id = $1;
 
     `, [id], (err: any, results: any) => {

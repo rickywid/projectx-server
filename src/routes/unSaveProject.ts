@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.delete('/:id', function (req, res, next) {
 
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     
     const form = new formidable.IncomingForm();
     

@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.get('/:id', function (req, res, next) {
 
-    const id = parseInt(req.params.id);
+    const id = req.params.id;
     let project: any;
     let comments: any;
     let likes: any;
@@ -12,7 +12,7 @@ router.get('/:id', function (req, res, next) {
     // get project info
     db.query(`
         SELECT 
-            projects.id,
+            projects.uuid,
             projects.name,
             projects.tagline,
             projects.description,
@@ -32,17 +32,17 @@ router.get('/:id', function (req, res, next) {
                 FROM projects_technologies
                 INNER JOIN technologies
                 ON technologies.id = projects_technologies.technology_id
-                WHERE projects_technologies.project_id = projects.id) AS technologies,
+                WHERE projects_technologies.project_id = projects.uuid) AS technologies,
 
 
         (SELECT array_agg(tags.name::TEXT)
             FROM projects_tags
             INNER JOIN tags
             ON tags.id = projects_tags.tag_id
-            WHERE projects_tags.project_id = projects.id) AS tags
+            WHERE projects_tags.project_id = projects.uuid) AS tags
 
         FROM projects
-        WHERE projects.id = $1;
+        WHERE projects.uuid = $1;
     `, [id], (err: any, result: { rows: any; }) => {
         if (err) { console.log(err) };
         

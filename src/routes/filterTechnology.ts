@@ -8,7 +8,7 @@ router.get('/:technology', function (req, res, next) {
     db.query(`
     SELECT 
 
-    projects.id,
+    projects.uuid,
     projects.name,
     projects.tagline,
     projects.description,
@@ -25,11 +25,11 @@ router.get('/:technology', function (req, res, next) {
     FROM projects_tags
     INNER JOIN tags
     ON tags.id = projects_tags.tag_id
-    WHERE projects_tags.project_id = projects.id) as tags
+    WHERE projects_tags.project_id = projects.uuid) as tags
 
     FROM projects_technologies
     INNER JOIN projects
-    ON projects.id = projects_technologies.project_id
+    ON projects.uuid = projects_technologies.project_id
     WHERE projects_technologies.technology_id = $1;
 
     `, [id], (err: any, results: any) => {

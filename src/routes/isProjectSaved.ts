@@ -5,7 +5,7 @@ const router = express.Router();
 router.get('/:id', function (req, res, next) {
 
     if(req.user) {
-        const id = parseInt(req.params.id);
+        const id = req.params.id;
         const u = req.user as any;
         let project: any;
         let comments: any;
