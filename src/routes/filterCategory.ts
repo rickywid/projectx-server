@@ -17,6 +17,9 @@ router.get('/:category', function (req, res, next) {
         projects.images,
         projects.created_on,
 
+        (select count(*) from comments where comments.project_id = projects.uuid) as comment_count,
+        (select count(*) from likes where likes.project_id = projects.uuid) as likes_count,
+        
         (select id from users where users.id = projects.user_id) as user_id,
         (select username from users where users.id = projects.user_id),
         (select gh_avatar from users where users.id = projects.user_id),
