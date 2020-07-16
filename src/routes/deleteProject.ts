@@ -13,7 +13,7 @@ router.delete('/:id', function (req, res, next) {
         let data: any;
         db.query(`
             DELETE FROM projects
-            WHERE id = $1;
+            WHERE uuid = $1;
         `, [fields.project_id], (err: any, result: { rows: any; }) => {
             if (err) { console.log(err) };
             
