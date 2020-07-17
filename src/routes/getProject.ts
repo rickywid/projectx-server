@@ -61,7 +61,9 @@ router.get('/:id', function (req, res, next) {
         FROM comments
         JOIN users
         ON users.id = comments.user_id
-        WHERE project_id = $1;
+        WHERE project_id = $1
+        ORDER BY comments.created_on ASC;
+        ;
         `, [id], (err: any, result: { rows: any; }) => {
             if(err) { console.log(err )};
             comments = result.rows;

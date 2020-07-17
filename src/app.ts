@@ -35,6 +35,8 @@ import filterTechnologyRouter from './routes/filterTechnology';
 import filterCategoryRouter from './routes/filterCategory';
 import reportProjectRouter from './routes/reportProject';
 import reportCommentRouter from './routes/reportComment';
+import deleteCommentRouter from './routes/deleteComment';
+import editCommentRouter from './routes/editComment';
 
 const app = express()
 const port = 5000
@@ -102,5 +104,7 @@ app.use('/api/technology', filterTechnologyRouter);
 app.use('/api/category', filterCategoryRouter);
 app.use('/api/report/project', reportProjectRouter);
 app.use('/api/report/comment', reportCommentRouter);
+app.use('/api/comment/delete', deleteCommentRouter);
+app.use('/api/comment/edit', editCommentRouter);
 
-app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at ${process.env.DOMAIN}:${port}`))
+app.listen(process.env.PORT || 5000, () => console.log(`App listening at ${process.env.DOMAIN}:${port}`))

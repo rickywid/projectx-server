@@ -16,13 +16,32 @@ router.post('/', function (req, res, next) {
 
       db.query(`
       INSERT INTO comments (user_id, project_id, comment)
-      VALUES ($1, $2, $3);`
+      VALUES ($1, $2, $3) returning id as comment_id, user_id;`
       ,[user_id, project_id, comment], (err: any, result: any) => {
         if (err) {
           return console.log(err)
         }
-
-        res.send({msg: 'submitted'})     
+        
+        db.query(`
+        SELECT 
+          comments.id AS comment_id,
+          comment,
+          project_id, 
+          comments.created_on,
+          username,
+          gh_avatar,
+          users.id AS user_id
+        FROM comments
+        JOIN users
+        ON users.id = comments.user_id
+        WHERE project_id = $1
+        ORDER BY comments.created_on ASC;
+        
+      `, [fields.project_id], (err: any, result: any) => {
+            if (err) { console.log(err) };
+            
+            res.json({data: result.rows});
+        }); 
       });
     });
 });
