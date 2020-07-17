@@ -34,6 +34,7 @@ import deleteUserRouter from './routes/deleteUser';
 import filterTechnologyRouter from './routes/filterTechnology';
 import filterCategoryRouter from './routes/filterCategory';
 import reportProjectRouter from './routes/reportProject';
+import reportCommentRouter from './routes/reportComment';
 
 const app = express()
 const port = 5000
@@ -100,5 +101,6 @@ app.use('/api/password/update', updatePasswordRouter);
 app.use('/api/technology', filterTechnologyRouter);
 app.use('/api/category', filterCategoryRouter);
 app.use('/api/report/project', reportProjectRouter);
+app.use('/api/report/comment', reportCommentRouter);
 
 app.listen(process.env.PORT || 5000, () => console.log(`Example app listening at ${process.env.DOMAIN}:${port}`))

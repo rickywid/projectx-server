@@ -9,15 +9,15 @@ router.post('/', function (req, res, next) {
 
     form.parse(req, async (err, fields) => {
 
-        const { project_id, comment } = fields;
+        const { comment_id, } = fields;
 
         if (err) throw err;
         
         db.query(`
-        UPDATE projects
+        UPDATE comments
         SET reported = true
-        WHERE uuid = $1;
-    `, [project_id], (err: any, result: { rows: any; }) => {
+        WHERE id = $1;
+    `, [comment_id], (err: any, result: { rows: any; }) => {
             if (err) { console.log(err) };
 
             res.send({
