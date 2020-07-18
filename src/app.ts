@@ -37,6 +37,7 @@ import reportProjectRouter from './routes/reportProject';
 import reportCommentRouter from './routes/reportComment';
 import deleteCommentRouter from './routes/deleteComment';
 import editCommentRouter from './routes/editComment';
+import userAuthRouter from './routes/auth/userAuth';
 
 const app = express()
 const port = 5000
@@ -80,6 +81,7 @@ app.use('/api/auth/github/callback', githubAuthCallbackRouter);
 app.use('/api/login/', loginRouter);
 app.use('/api/signup/', signupRouter);
 app.use('/api/signout/', signoutRouter);
+app.use('/api/userAuth', userAuthRouter);
 
 app.use('/api/projects/', getProjectsRouter);
 app.use('/api/user/', getUserRouter);
