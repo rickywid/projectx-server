@@ -20,6 +20,7 @@ import createProjectRouter from './routes/createProject';
 import likeProjectRouter from './routes/likeProject';
 import unlikeProjectRouter from './routes/unlikeProject';
 import getProjectRouter from './routes/getProject';
+import getProjectCommentsRouter from './routes/getProjectComments';
 import newCommentProjectRouter from './routes/newCommentProject';
 import getUserProfileRouter from './routes/getUserProfile';
 import saveProjecteRouter from './routes/saveProject';
@@ -93,6 +94,8 @@ app.use('/api/image/upload', imageUploadRouter);
 app.use('/api/project/new', createProjectRouter);
 app.use('/api/project/update', updateProjectRouter);
 app.use('/api/project', getProjectRouter);
+app.use('/api/project', getProjectCommentsRouter);
+
 app.use('/api/project/like', likeProjectRouter);
 app.use('/api/project/unlike', unlikeProjectRouter);
 app.use('/api/comment/new', newCommentProjectRouter);
@@ -112,5 +115,6 @@ app.use('/api/report/comment', reportCommentRouter);
 app.use('/api/report/user', reportUserRouter);
 app.use('/api/comment/delete', deleteCommentRouter);
 app.use('/api/comment/edit', editCommentRouter);
+
 
 app.listen(process.env.PORT || 5000, () => console.log(`App listening at ${process.env.DOMAIN}:${port}`))
