@@ -29,7 +29,8 @@ router.get('/', function(req, res, next) {
             inner join tags
             on tags.id = projects_tags.tag_id
             where projects_tags.project_id = projects.uuid) as tags
-      from projects;
+      from projects
+      order by created_on asc;
     `, [], (err: any, result: { rows: any; }) => {
       if (err) {
         return console.log(err)

@@ -35,6 +35,7 @@ import filterTechnologyRouter from './routes/filterTechnology';
 import filterCategoryRouter from './routes/filterCategory';
 import reportProjectRouter from './routes/reportProject';
 import reportCommentRouter from './routes/reportComment';
+import reportUserRouter from './routes/reportUser';
 import deleteCommentRouter from './routes/deleteComment';
 import editCommentRouter from './routes/editComment';
 import userAuthRouter from './routes/auth/userAuth';
@@ -108,6 +109,7 @@ app.use('/api/technology', filterTechnologyRouter);
 app.use('/api/category', filterCategoryRouter);
 app.use('/api/report/project', reportProjectRouter);
 app.use('/api/report/comment', reportCommentRouter);
+app.use('/api/report/user', reportUserRouter);
 app.use('/api/comment/delete', deleteCommentRouter);
 app.use('/api/comment/edit', editCommentRouter);
 
