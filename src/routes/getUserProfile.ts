@@ -22,6 +22,7 @@ router.get('/:username', function (req, res, next) {
         users.description,
         users.created_on,
         users.gh_avatar,
+        users.user_profile_url,
         users.gh_profile_url,
         users.twitter_profile_url,
         users.username
