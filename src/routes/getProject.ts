@@ -18,6 +18,7 @@ router.get('/:id', function (req, res, next) {
             projects.description,
             projects.url,
             projects.repo,
+            projects.type,
             projects.collaboration,
             projects.images,
             projects.created_on,

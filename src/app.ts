@@ -38,6 +38,7 @@ import reportCommentRouter from './routes/reportComment';
 import deleteCommentRouter from './routes/deleteComment';
 import editCommentRouter from './routes/editComment';
 import userAuthRouter from './routes/auth/userAuth';
+import projectsTypeRouter from './routes/projectsType';
 
 const app = express()
 const port = 5000
@@ -84,6 +85,7 @@ app.use('/api/signout/', signoutRouter);
 app.use('/api/userAuth', userAuthRouter);
 
 app.use('/api/projects/', getProjectsRouter);
+app.use('/api/projects/', projectsTypeRouter);
 app.use('/api/user/', getUserRouter);
 app.use('/api/user/edit', updateUserRouter);
 app.use('/api/image/upload', imageUploadRouter);
