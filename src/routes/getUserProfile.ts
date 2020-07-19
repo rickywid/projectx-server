@@ -16,9 +16,19 @@ router.get('/:username', function (req, res, next) {
     }
 
     // get user profile
-    db.query(`SELECT * FROM users WHERE username = $1`, [username], (err: any, result: any) => {
+    db.query(`
+    SELECT 
+        users.id,
+        users.description,
+        users.created_on,
+        users.gh_avatar,
+        users.gh_profile_url,
+        users.twitter_profile_url,
+        users.username
+    FROM users 
+    WHERE username = $1`, [username], (err: any, result: any) => {
         if (err) console.log(err)
-
+        
         const user = result.rows[0];
         user['selfProfile'] = username === loggedInUser;
 
