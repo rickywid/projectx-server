@@ -5,6 +5,8 @@ const router = express.Router();
 router.get('/:id', function (req, res, next) {
 
     const id = req.params.id;
+    const userID = req.query.userID;
+    
     let project: any;
     let comments: any;
     let likes: any;
@@ -21,6 +23,7 @@ router.get('/:id', function (req, res, next) {
             projects.type,
             projects.collaboration,
             projects.images,
+            projects.user_id,
             projects.created_on,
             (SELECT username 
             FROM users 
@@ -80,6 +83,20 @@ router.get('/:id', function (req, res, next) {
             WHERE project_id = $1;
             `, [id], (err: any, result: { rows: any; }) => {
                 if(err) { console.log(err )};
+
+
+                /**
+                 * Return 401(unauthorized) if user who is trying edit the project 
+                 * is not the project owner
+                 */
+                
+                if(userID && userID !== 'undefined') {
+                    if(project.user_id.toString() !== userID) {
+                        res.status(401).json({message: 'Unauthorized'});
+                        return;
+                    }
+                }
+
                 likes = result.rows[0];
                 likes['users'] = likes['users'] || [];
                 
