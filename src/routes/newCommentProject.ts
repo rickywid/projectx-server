@@ -24,13 +24,13 @@ router.post('/', function (req, res, next) {
         
         db.query(`
         SELECT 
-          comments.id AS comment_id,
-          comment,
-          project_id, 
-          comments.created_on,
-          username,
-          gh_avatar,
-          users.id AS user_id
+            comments.id AS comment_id,
+            comment,
+            project_id, 
+            comments.created_on,
+            username,
+            gh_avatar,
+            users.id AS user_id
         FROM comments
         JOIN users
         ON users.id = comments.user_id

@@ -8,12 +8,12 @@ router.put('/:id', function (req, res, next) {
     const form = new formidable.IncomingForm();
 
     form.parse(req, (err, fields) => {
-      if(err) {
-        console.log(err);
-        throw err; 
-      }
-      
-      db.query(`
+        if (err) {
+            console.log(err);
+            throw err;
+        }
+
+        db.query(`
         UPDATE comments
         SET comment = $1
         WHERE id = $2;
@@ -23,13 +23,13 @@ router.put('/:id', function (req, res, next) {
 
             db.query(`
             SELECT 
-              comments.id AS comment_id,
-              comment,
-              project_id, 
-              comments.created_on,
-              username,
-              gh_avatar,
-              users.id AS user_id
+                comments.id AS comment_id,
+                comment,
+                project_id, 
+                comments.created_on,
+                username,
+                gh_avatar,
+                users.id AS user_id
             FROM comments
             JOIN users
             ON users.id = comments.user_id
@@ -38,8 +38,8 @@ router.put('/:id', function (req, res, next) {
             
           `, [fields.project_id], (err: any, result: any) => {
                 if (err) { console.log(err) };
-                
-                res.json({data: result.rows});
+
+                res.json({ data: result.rows });
             });
         });
     });

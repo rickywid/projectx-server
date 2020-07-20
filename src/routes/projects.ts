@@ -4,7 +4,7 @@ import db from '../lib/db';
 
 router.get('/', function(req, res, next) {
     db.query(`
-      select 
+    SELECT 
         projects.uuid,
         projects.name,
         projects.description,
@@ -12,25 +12,25 @@ router.get('/', function(req, res, next) {
         projects.url,
         projects.images,
         projects.collaboration,
-        (select count(*) from comments where comments.project_id = projects.uuid) as comment_count,
-        (select count(*) from likes where likes.project_id = projects.uuid) as likes_count,
-        (select id from users where users.id = projects.user_id) as user_id,
-        (select username from users where users.id = projects.user_id),
-        (select gh_avatar from users where users.id = projects.user_id),
+        (SELECT count(*) FROM comments WHERE comments.project_id = projects.uuid) AS comment_count,
+        (SELECT count(*) FROM likes WHERE likes.project_id = projects.uuid) AS likes_count,
+        (SELECT id FROM users WHERE users.id = projects.user_id) AS user_id,
+        (SELECT username FROM users WHERE users.id = projects.user_id),
+        (SELECT gh_avatar FROM users WHERE users.id = projects.user_id),
 
-        (select array_agg(technologies.name::TEXT)
-          from projects_technologies
-          inner join technologies
-          on technologies.id = projects_technologies.technology_id
-          where projects_technologies.project_id = projects.uuid) as technologies,
+        (SELECT array_agg(technologies.name::TEXT)
+        FROM projects_technologies
+        INNER JOIN technologies
+        ON technologies.id = projects_technologies.technology_id
+        WHERE projects_technologies.project_id = projects.uuid) AS technologies,
         
-          (select array_agg(tags.name::TEXT)
-            from projects_tags
-            inner join tags
-            on tags.id = projects_tags.tag_id
-            where projects_tags.project_id = projects.uuid) as tags
-      from projects
-      order by created_on asc;
+        (SELECT array_agg(tags.name::TEXT)
+            FROM projects_tags
+            INNER JOIN tags
+            ON tags.id = projects_tags.tag_id
+            WHERE projects_tags.project_id = projects.uuid) AS tags
+    FROM projects
+    ORDER BY created_on ASC;
     `, [], (err: any, result: { rows: any; }) => {
       if (err) {
         return console.log(err)
