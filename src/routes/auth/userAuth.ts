@@ -7,12 +7,12 @@ router.get('/', function (req, res) {
      * Check if a user is authenticated
      */
 
-    if(req.isAuthenticated()) {
+    if(req.isAuthenticated() || req.session!.authenticated) {
         const u:any = req.user;
         
         res.send({
-            id: u.id,
-            username: u.username,
+            id: req.session!.userID || u.id,
+            username: req.session!.username || u.username,
             isAuthenticated: true
         });
     } else {

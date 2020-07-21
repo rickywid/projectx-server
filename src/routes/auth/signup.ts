@@ -49,8 +49,10 @@ router.post('/', (req, res, next) => {
 
               if (err) console.log(err)
               
+              // create session data only when new user signs up in order to fetch user data.
               req.session!.userID = result.rows[0].id;
               req.session!.username = result.rows[0].username;
+              req.session!.authenticated = true;
               
               return res.status(200).send({id: result.rows[0].id});
 
