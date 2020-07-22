@@ -46,9 +46,14 @@ router.get('/:id', function (req, res, next) {
             WHERE projects_tags.project_id = projects.uuid) AS tags
 
         FROM projects
-        WHERE projects.uuid = $1;
+        WHERE projects.uuid::text = $1;
     `, [id], (err: any, result: { rows: any; }) => {
-        if (err) { console.log(err) };
+        if (err) { console.log(err) }
+        
+        if(result.rows.length === 0) {
+            res.status(404).send('Project not found');
+            return;
+        }
         
         project = result.rows[0];
         

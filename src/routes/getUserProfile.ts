@@ -29,6 +29,11 @@ router.get('/:username', function (req, res, next) {
     FROM users 
     WHERE username = $1`, [username], (err: any, result: any) => {
         if (err) console.log(err)
+
+        if(!result.rows.length) {
+            res.status(404).send('User not found');
+            return;
+        }
         
         const user = result.rows[0];
         user['selfProfile'] = username === loggedInUser;
