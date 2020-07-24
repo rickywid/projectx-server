@@ -3,6 +3,8 @@
 import express from 'express';
 import cloudinary from 'cloudinary';
 import formidable from 'formidable';
+import Jimp from 'jimp';
+
 const router = express.Router();
 
 cloudinary.config({ 
@@ -19,11 +21,19 @@ router.post('/', (req, res, next) => {
         throw err;
       }
 
-    cloudinary.v2.uploader.upload(files.file.path, function(error, result) {
-        if(error){
-          console.log(error);
-        }
-        res.send(result)
+      Jimp.read(files.file.path, (err, profilePic) => {
+        if (err) throw err;
+        profilePic
+          .resize(256, 256) 
+          .quality(60) 
+          .write(files.file.path);
+
+          cloudinary.v2.uploader.upload(files.file.path, function(error, result) {
+            if(error){
+              console.log(error);
+            }
+          res.send(result);
+        });
       });
     });
 });
