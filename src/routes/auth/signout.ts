@@ -5,12 +5,8 @@ const router = express.Router();
 router.post('/', function (req, res, next) {
     req.logOut();
     req.session?.destroy(function(err) {
-        db.query(`
-          TRUNCATE session;
-        `, [], () => {
-          res.send({ status: 200 })
-        })
-      })
+      res.send({ status: 200 })
+    });
 });
 
 
