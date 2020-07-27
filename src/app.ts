@@ -53,6 +53,7 @@ app.use(cors({
     'https://codeconcept-beta.herokuapp.com',
     'https://beta.codeconcept.io',
     'https://codeconcept.io',
+    'https://www.codeconcept.io'
   ],
   credentials: true
 }));
