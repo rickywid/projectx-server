@@ -50,6 +50,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000', 
     'https://evening-spire-06654.herokuapp.com',
+    'https://codeconcept-beta.herokuapp.com/',
     'https://www.beta.codeconcept.io',
     'https://beta.codeconcept.io',
     'https://www.codeconcept.io',
