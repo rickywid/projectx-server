@@ -51,12 +51,8 @@ app.use(cors({
     'http://localhost:3000', 
     'https://evening-spire-06654.herokuapp.com',
     'https://codeconcept-beta.herokuapp.com',
-    'https://www.beta.codeconcept.io',
     'https://beta.codeconcept.io',
-    'https://www.codeconcept.io',
     'https://codeconcept.io',
-    'www.beta.codeconcept.io',
-    'www.codeconcept.io'
   ],
   credentials: true
 }));
