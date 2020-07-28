@@ -49,7 +49,7 @@ const parseJSON = express.json();
 app.use(cors({
   origin: [
     'http://localhost:3000', 
-    'https://evening-spire-06654.herokuapp.com',
+    'https://codeconcept.prod.herokuapp.com',
     'https://codeconcept-beta.herokuapp.com',
     'https://beta.codeconcept.io',
     'https://codeconcept.io',
