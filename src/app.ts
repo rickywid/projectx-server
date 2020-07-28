@@ -124,7 +124,6 @@ app.use('/api/user/delete', deleteUserRouter);
 app.use('/api/search', searchRouter);
 app.use('/api/technology', filterTechnologyRouter);
 app.use('/api/category', filterCategoryRouter);
-
 app.use('/api/image/upload', imageUploadRouter);
 
 app.listen(process.env.PORT || 5000, () => console.log(`App listening at ${process.env.DOMAIN}:${port}`))
