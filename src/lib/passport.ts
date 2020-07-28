@@ -26,7 +26,6 @@ passport.deserializeUser(async (id, done) => {
   );
 });
 
-
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_SECRET,
