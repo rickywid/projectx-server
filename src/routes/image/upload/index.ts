@@ -15,27 +15,39 @@ cloudinary.config({
   
 router.post('/', (req, res, next) => {
     const form = new formidable.IncomingForm();
+
     form.parse(req, (err, fields, files) => { 
+      const fileType = fields.fileType;
+      
       if(err) {
         console.log(err);
-        throw err;
+        throw err; 
       }
 
-      Jimp.read(files.file.path, (err, profilePic) => {
-        if (err) throw err;
-        profilePic
-          .resize(256, 256) 
-          .quality(60) 
-          .write(files.file.path);
+      if(fileType === "user") {
+        Jimp.read(files.file.path, (err, profilePic) => {
+          if (err) throw err;
+          profilePic
+            .resize(256, 256) 
+            .quality(60) 
+            .write(files.file.path);
 
-          cloudinary.v2.uploader.upload(files.file.path, function(error, result) {
-            if(error){
-              console.log(error);
-            }
-          res.send(result);
-        });
-      });
+            cloudinary.v2.uploader.upload(files.file.path, function(error, result) {
+              if(error){
+                console.log(error);
+              }
+            res.send(result);
+          });
+        });      
+      };
+
+      cloudinary.v2.uploader.upload(files.file.path, function(error, result) {
+        if(error){
+          console.log(error);
+        }
+      res.send(result);
     });
+  });
 });
 
 export default router;
