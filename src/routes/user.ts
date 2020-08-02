@@ -2,25 +2,21 @@ import express from 'express';
 import db from './../lib/db';
 const router = express.Router();
 
-router.get('/:id', function (req, res, next) {
+router.get('/', function (req, res, next) {
   
   
   /* 
+  After successfull login/signup, this route will be called to fetch user data.
+
   User Sign Up
-  If user signup is successful, localStorage will store user's id.
-  User will be redirected "/" root component and will fetch user data using user id stored in localStorage.
+  If user signup is successful, get the user's ID from req.sessions.userID.
 
   User Login
-  If user logs in via email/pass or Github, user will be redirected to "/" if successful. userID in localStorage will be empty 
-  and default value of 0 will be passed as user_id parameter in client side side fetch request.
+  If user logs in via email/pass or Github, get user's ID from Passport's req.user.id object.
   */
   
-
-  const params = parseInt(req.params.id);
-
-  // if params is 0, user was redirected to "/" after successful signup. get user's profile using user's id in url parameter.
-  if(params) {
-    db.query(`SELECT * FROM users WHERE id = $1`, [params], (err: any, result: any) => {
+  if(req.session!.authenticated) {
+    db.query(`SELECT * FROM users WHERE id = $1`, [req.session!.userID], (err: any, result: any) => {
       if(err) console.log(err)
 
       const user = result.rows[0];
