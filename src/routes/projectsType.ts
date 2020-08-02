@@ -5,7 +5,9 @@ const router = express.Router();
 router.get('/:name', function (req, res, next) {
 
     const name = req.params.name;
-    
+    const page: any = req.query.page;
+    const offset: any = req.query.offset;
+
     if(name === 'popular') {
         db.query(`
         SELECT 
@@ -35,10 +37,30 @@ router.get('/:name', function (req, res, next) {
             WHERE projects_tags.project_id = projects.uuid) AS tags
             
         FROM projects
-        ORDER BY likes_count DESC;
-        `, [], (err: any, result: { rows: any; }) => {
-            res.json({
-                data: result.rows || []
+        ORDER BY likes_count DESC
+        LIMIT $2 OFFSET($1 - 1) * $2;
+        `, [page, offset], (err: any, result: { rows: any; }) => {
+            if (err) {
+                return console.log(err)
+              }
+            
+            const projects = result.rows;
+
+            db.query(
+                `SELECT COUNT(*) FROM projects;`
+              , [], (err: any, result: { rows: any; }) => {
+                if (err) {
+                  return console.log(err)
+                }
+        
+                const total: number = parseInt(result.rows[0].count);
+                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+                
+                res.json({
+                  data: projects || [],
+                  hasMore,
+                  total
+                });
             });
         });
     }
@@ -72,11 +94,32 @@ router.get('/:name', function (req, res, next) {
                 WHERE projects_tags.project_id = projects.uuid) AS tags
         FROM projects
         WHERE type = $1
-        ORDER BY created_on ASC;
-        `, [name], (err: any, result: { rows: any; }) => {
-            res.json({
-                data: result.rows || []
-            });
+        ORDER BY created_on ASC
+        LIMIT $2 OFFSET($3 - 1) * $2;
+        `, [name, offset, page], (err: any, result: { rows: any; }) => {
+            if (err) {
+                return console.log(err)
+              }
+            
+            const projects = result.rows;
+
+            db.query(
+                `SELECT COUNT(*) FROM projects WHERE type = $1;`
+              , [name], (err: any, result: { rows: any; }) => {
+                if (err) {
+                  return console.log(err)
+                }
+        
+                const total: number = parseInt(result.rows[0].count);
+                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+        
+                res.json({
+                  data: projects || [],
+                  user: req.user,
+                  hasMore,
+                  total
+                });
+              });
         });
     }
 
@@ -109,10 +152,20 @@ router.get('/:name', function (req, res, next) {
                 WHERE projects_tags.project_id = projects.uuid) AS tags
         FROM projects
         WHERE collaboration = true
-        ORDER BY created_on ASC;        
-        `, [], (err: any, result: { rows: any; }) => {
+        ORDER BY created_on ASC
+        LIMIT $2 OFFSET($1 - 1) * $2;
+        `, [page, offset], (err: any, result: { rows: any; }) => {
+            if (err) {
+                return console.log(err)
+                }
+        
+                const total: number = parseInt(result.rows.length);
+                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+        
             res.json({
-                data: result.rows || []
+                data: result.rows || [],
+                total,
+                hasMore
             });
         })
     }

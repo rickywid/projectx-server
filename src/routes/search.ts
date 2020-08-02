@@ -5,7 +5,9 @@ const router = express.Router();
 router.get('/', function (req, res, next) {
 
     const project = req.query.project;
-    
+    const page: any = req.query.page;
+    const offset: any = req.query.offset;
+
     db.query(`
     SELECT 
         COUNT(*) OVER () AS total_rows,
@@ -35,12 +37,33 @@ router.get('/', function (req, res, next) {
         WHERE projects_tags.project_id = projects.uuid) AS tags
 
     FROM projects 
-    WHERE ($1::varchar(255) IS NULL OR name ILIKE $1);
-    `, ['%'+project+'%'], (err: any, results: any) => {
+    WHERE ($1::varchar(255) IS NULL OR name ILIKE $1)
+    LIMIT $3 OFFSET($2 - 1) * $3;
+    `, ['%'+project+'%', page, offset], (err: any, results: any) => {
+        if (err) {
+            return console.log(err)
+        }
 
-        res.send({
-            data: results.rows.length ? results.rows : [],
-            count: results.rows.length ? results.rows[0].total_rows : 0
+        const projects = results.rows;
+
+        db.query(
+            `
+            SELECT COUNT(*) FROM PROJECTS
+            WHERE ($1::varchar(255) IS NULL OR name ILIKE $1)
+            `
+        , ['%'+project+'%'], (err: any, results: any) => {
+            if (err) {
+                return console.log(err)
+            }
+
+            const total: number = parseInt(results.rows[0].count);
+            const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+    
+            res.send({
+                data: projects.length ? projects : [],
+                count: total,
+                hasMore
+            });   
         });
     })
 });

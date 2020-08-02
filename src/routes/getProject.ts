@@ -57,56 +57,38 @@ router.get('/:id', function (req, res, next) {
         
         project = result.rows[0];
         
-        // get project's comments
+        if(err) { console.log(err )};
+        comments = result.rows;
+
+        // get project's likes
         db.query(`
-        SELECT 
-            comments.id AS comment_id,
-            comment,
-            project_id, 
-            comments.created_on,
-            username,
-            gh_avatar,
-            users.id AS user_id
-        FROM comments
-        JOIN users
-        ON users.id = comments.user_id
-        WHERE project_id = $1
-        ORDER BY comments.created_on ASC;
-        ;
+        SELECT
+            (SELECT array_agg(user_id) AS users 
+            FROM likes 
+            WHERE project_id = $1),
+        COUNT(*)
+        FROM likes
+        WHERE project_id = $1;
         `, [id], (err: any, result: { rows: any; }) => {
             if(err) { console.log(err )};
-            comments = result.rows;
-
-            // get project's likes
-            db.query(`
-            SELECT
-                (SELECT array_agg(user_id) AS users 
-                FROM likes 
-                WHERE project_id = $1),
-            COUNT(*)
-            FROM likes
-            WHERE project_id = $1;
-            `, [id], (err: any, result: { rows: any; }) => {
-                if(err) { console.log(err )};
 
 
-                /**
-                 * Return 401(unauthorized) if user who is trying edit the project 
-                 * is not the project owner
-                 */
-                
-                if(userID && userID !== 'undefined') {
-                    if(project.user_id.toString() !== userID) {
-                        res.status(401).json({message: 'Unauthorized'});
-                        return;
-                    }
+            /**
+             * Return 401(unauthorized) if user who is trying edit the project 
+             * is not the project owner
+             */
+            
+            if(userID && userID !== 'undefined') {
+                if(project.user_id.toString() !== userID) {
+                    res.status(401).json({message: 'Unauthorized'});
+                    return;
                 }
+            }
 
-                likes = result.rows[0];
-                likes['users'] = likes['users'] || [];
-                
-                res.json({ project, comments, likes });
-            });
+            likes = result.rows[0];
+            likes['users'] = likes['users'] || [];
+            
+            res.json({ project, comments, likes });
         });
     })
 });

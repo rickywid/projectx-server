@@ -4,7 +4,9 @@ const router = express.Router();
 
 router.get('/:technology', function (req, res, next) {
     const id = req.params.technology;
-    
+    const page: any = req.query.page;
+    const offset: any = req.query.offset;
+
     db.query(`
     SELECT 
 
@@ -33,12 +35,36 @@ router.get('/:technology', function (req, res, next) {
     FROM projects_technologies
     INNER JOIN projects
     ON projects.uuid = projects_technologies.project_id
-    WHERE projects_technologies.technology_id = $1;
+    WHERE projects_technologies.technology_id = $1
+    LIMIT $2 OFFSET($3 - 1) * $2;
 
-    `, [id], (err: any, results: any) => {
+    `, [id, offset, page], (err: any, results: any) => {
+        if (err) {
+            return console.log(err)
+          }
 
-        res.send({
-            data: results.rows
+          const projects = results.rows;
+  
+          db.query(
+            `
+                SELECT COUNT(*) FROM projects
+                INNER JOIN projects_technologies
+                ON projects.uuid = projects_technologies.project_id
+                WHERE projects_technologies.technology_id = $1;
+            `
+          , [id], (err: any, result: { rows: any; }) => {
+                if (err) {
+                return console.log(err)
+                }
+        
+                const total: number = parseInt(result.rows[0].count);
+                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+        
+            res.json({
+                data: projects || [],
+                total,
+                hasMore
+            });
         });
     })
 });

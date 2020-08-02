@@ -3,6 +3,9 @@ const router = express.Router();
 import db from '../lib/db';
 
 router.get('/', function(req, res, next) {
+  const page: any = req.query.page;
+  const offset: any = req.query.offset;
+
     db.query(`
     SELECT 
         projects.uuid,
@@ -30,14 +33,30 @@ router.get('/', function(req, res, next) {
             ON tags.id = projects_tags.tag_id
             WHERE projects_tags.project_id = projects.uuid) AS tags
     FROM projects
-    ORDER BY created_on ASC;
-    `, [], (err: any, result: { rows: any; }) => {
+    ORDER BY created_on ASC
+    LIMIT $2 OFFSET($1 - 1) * $2;
+    `, [page, offset], (err: any, result: { rows: any; }) => {
       if (err) {
         return console.log(err)
       }
-      res.json({
-        data: result.rows || [], 
-        user: req.user
+
+      const projects = result.rows;
+
+      db.query(
+        `SELECT COUNT(*) FROM projects;`
+      , [], (err: any, result: { rows: any; }) => {
+        if (err) {
+          return console.log(err)
+        }
+
+        const total: number = parseInt(result.rows[0].count);
+        const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+
+        res.json({
+          data: projects || [], 
+          user: req.user,
+          hasMore
+        });
       });
     })
 });

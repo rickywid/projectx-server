@@ -4,6 +4,8 @@ const router = express.Router();
 
 router.get('/:category', function (req, res, next) {
     const id = req.params.category;
+    const page: any = req.query.page;
+    const offset: any = req.query.offset;
     
     db.query(`
     SELECT 
@@ -33,12 +35,36 @@ router.get('/:category', function (req, res, next) {
     FROM projects_tags
     INNER JOIN projects
     ON projects.uuid = projects_tags.project_id
-    WHERE projects_tags.tag_id = $1;
+    WHERE projects_tags.tag_id = $1
+    LIMIT $2 OFFSET($3 - 1) * $2;
 
-    `, [id], (err: any, results: any) => {
-
-        res.send({
-            data: results.rows || []
+    `, [id, offset, page], (err: any, results: any) => {
+        if (err) {
+            return console.log(err)
+          }
+    
+          const projects = results.rows;
+    
+          db.query(
+            `
+                SELECT COUNT(*) FROM projects
+                INNER JOIN projects_tags
+                ON projects.uuid = projects_tags.project_id
+                WHERE projects_tags.tag_id = $1;
+            `
+          , [id], (err: any, result: { rows: any; }) => {
+                if (err) {
+                return console.log(err)
+                }
+        
+                const total: number = parseInt(result.rows[0].count);
+                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+        
+                res.json({
+                data: projects || [], 
+                total,
+                hasMore
+            });
         });
     })
 });
