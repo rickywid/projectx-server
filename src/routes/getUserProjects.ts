@@ -68,7 +68,7 @@ router.get('/:username/projects', function (req, res, next) {
                 if (err) console.log(err);
 
                 const total: number = parseInt(result.rows[0].count);
-                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) || total <= offset ? false : true;
 
                 res.json({
                     data: projects,

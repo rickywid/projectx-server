@@ -58,7 +58,7 @@ router.get('/:category', function (req, res, next) {
                 }
         
                 const total: number = parseInt(result.rows[0].count);
-                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) ? false : true;
+                const hasMore = Math.ceil(total / parseInt(offset)) === parseInt(page) || total <= offset ? false : true;
         
                 res.json({
                 data: projects || [], 
