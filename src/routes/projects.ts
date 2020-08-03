@@ -33,7 +33,7 @@ router.get('/', function(req, res, next) {
             ON tags.id = projects_tags.tag_id
             WHERE projects_tags.project_id = projects.uuid) AS tags
     FROM projects
-    ORDER BY created_on ASC
+    ORDER BY created_on DESC
     LIMIT $2 OFFSET($1 - 1) * $2;
     `, [page, offset], (err: any, result: { rows: any; }) => {
       if (err) {
