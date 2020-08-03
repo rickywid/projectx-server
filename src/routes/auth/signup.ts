@@ -2,6 +2,8 @@ import express from 'express';
 import formidable from 'formidable';
 import bcrypt from 'bcrypt-nodejs';
 import db from '../../lib/db';
+import mailer from "../../lib/mailer";
+
 const router = express.Router();
 
 
@@ -47,8 +49,13 @@ router.post('/', (req, res, next) => {
               VALUES ($1, $2, $3, $4) RETURNING id, username;
             `, [username, email, hash, profile_img], (err: any, result: any) => {
 
-              if (err) console.log(err)
-              
+              if (err) console.log(err);
+
+              mailer(
+                'New User Signup',
+                `${username} has signed up to CodeConcept.`
+                ).catch(console.error);              
+
               // create session data only when new user signs up in order to fetch user data.
               req.session!.userID = result.rows[0].id;
               req.session!.username = result.rows[0].username;

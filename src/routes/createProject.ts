@@ -1,6 +1,7 @@
 import express from 'express';
 import formidable from 'formidable';
 import db from '../lib/db';
+import mailer from '../lib/mailer';
 import { v4 as uuidv4 } from 'uuid';
 const router = express.Router();
 
@@ -34,21 +35,29 @@ router.post('/', function (req, res, next) {
       const screenshotsArr = screenshots.split(',');
       
       db.query(`
-          WITH
-            t1 AS (INSERT INTO projects(name, description, tagline, url, collaboration, user_id, images, repo, uuid, type) 
-                    VALUES ($1, $2, $3, $4, $5, $6, $7, $10, $11, $12) returning uuid),
-            t2 AS (INSERT INTO projects_technologies(project_id, technology_id) 
-                    SELECT t1.uuid, unnest($8::integer[]) from t1) 
+      WITH
+        t1 AS (INSERT INTO projects(NAME, description, tagline, url, collaboration, user_id, images, repo, uuid, TYPE) 
+                VALUES ($1, $2, $3, $4, $5, $6, $7, $10, $11, $12) RETURNING uuid),
+        t2 AS (INSERT INTO projects_technologies(project_id, technology_id) 
+                SELECT t1.uuid, UNNEST($8::INTEGER[]) FROM t1), 
+        t3 AS (INSERT INTO projects_tags(project_id, tag_id) 
+                SELECT t1.uuid, UNNEST($9::INTEGER[]) FROM t1)
 
-            INSERT INTO projects_tags(project_id, tag_id) 
-            SELECT t1.uuid, unnest($9::integer[])
-            
-          FROM t1;`,[name, description, tagline, url, collaboration, user_id, screenshotsArr, technologiesArr, tagsArr, repourl, uuidv4(), type], (err: any, result: any) => {
+      SELECT uuid FROM t1;
+          
+          `,[name, description, tagline, url, collaboration, user_id, screenshotsArr, technologiesArr, tagsArr, repourl, uuidv4(), type], (err: any, result: any) => {
         if (err) {
           return console.log(err)
         }
+
+        const uuid = result.rows[0].uuid;
+
+        mailer(
+          'New Project Added',
+          `A new project has been added to CodeConcept.`
+          ).catch(console.error);     
         
-        res.json({status: 200});
+        res.json({uuid});
       })
     });
 });
