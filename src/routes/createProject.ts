@@ -54,7 +54,7 @@ router.post('/', function (req, res, next) {
 
         mailer(
           'New Project Added',
-          `A new project has been added to CodeConcept.`
+          `A new project has been added to CodeConcept. View the project at https://beta.codeconcept.io/project/${uuid}`
           ).catch(console.error);     
         
         res.json({uuid});
