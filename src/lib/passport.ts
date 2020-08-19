@@ -91,14 +91,14 @@ passport.use(new LocalStrategy((username: string, password: string, done: any) =
       }
 
       if (result.rows.length === 0) {
-        return done(null, false);
+        return done(null, false, {message: "Incorrect username or password"});
       }
 
       const user = result.rows[0];
 
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if(err || !isMatch) {
-          return done(null, false)
+          return done(null, false, {message: "Incorrect username or password"})
         }
         return done(null, user)
       })

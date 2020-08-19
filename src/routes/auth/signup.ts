@@ -22,7 +22,10 @@ router.post('/', (req, res, next) => {
     `, [username], (err: any, result: any) => {
     
     if (err) console.log(err)
-    if(result.rows.length > 0) return res.status(400).send({message: "username already taken"});
+    if(result.rows.length > 0) return res.status(400).send({
+      status: "error",
+      message: "username already taken"
+    });
 
     // check if email already exists
     db.query(`
@@ -32,7 +35,10 @@ router.post('/', (req, res, next) => {
     `, [email], (err: any, result: any) => {
 
         if (err) console.log(err)
-        if(result.rows.length > 0) return res.status(400).send({message: "email already taken"});
+        if(result.rows.length > 0) return res.status(400).send({
+          status: 'error',
+          message: "email already taken"
+        });
 
           // create new user
           // generate salt
@@ -61,8 +67,10 @@ router.post('/', (req, res, next) => {
               req.session!.username = result.rows[0].username;
               req.session!.authenticated = true;
               
-              return res.status(200).send({id: result.rows[0].id});
-
+              return res.status(200).send({
+                status: "ok",
+                id: result.rows[0].id}
+              ); 
             });
           });
         });
