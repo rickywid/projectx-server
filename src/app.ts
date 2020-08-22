@@ -58,7 +58,8 @@ app.use(cors({
     'https://codeconcept.io',
     'https://www.codeconcept.io'
   ],
-  credentials: true
+  credentials: true,
+  
 }));
 
 const parseRequest = (req: any) => {
@@ -80,7 +81,10 @@ app.use(session({
         })
       }),
     secret: 'blkj4h3kj34hk34',
-    cookie: { secure: false }
+    cookie: { 
+      secure: true,
+      sameSite: 'none'
+    }
 }));
 
 app.use(passport.initialize());
