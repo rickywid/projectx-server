@@ -16,7 +16,7 @@ router.get('/', function (req, res) {
             isAuthenticated: true
         });
     } else {
-        res.status(401).send({message: 'Unauthorized'});
+        res.status(401).send({isAuthenticated: false});
     }
 });
 

@@ -57,7 +57,10 @@ router.post('/', function (req, res, next) {
           `A new project has been added to CodeConcept. View the project at https://beta.codeconcept.io/project/${uuid}`
           ).catch(console.error);     
         
-        res.json({uuid});
+        res.json({
+          status: 'ok',
+          uuid
+        });
       })
     });
 });

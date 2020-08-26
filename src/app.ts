@@ -82,8 +82,7 @@ app.use(session({
       }),
     secret: 'blkj4h3kj34hk34',
     cookie: { 
-      secure: true,
-      sameSite: 'none'
+      secure: false
     }
 }));
 
